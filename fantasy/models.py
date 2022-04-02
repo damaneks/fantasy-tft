@@ -19,3 +19,13 @@ class Tournament(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TournamentStage(models.Model):
+    tournament = models.ForeignKey(
+        Tournament, on_delete=models.CASCADE, related_name='tournament_stage')
+    name = models.CharField(max_length=255)
+    started = models.DateTimeField()
+
+    def __str__(self):
+        return self.tournament.name + ' - ' + self.name
