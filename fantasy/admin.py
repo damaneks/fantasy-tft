@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser, Player, Tournament, TournamentStage, PlayerScore
+from .models import (CustomUser, Player, PlayerScore, Tournament,
+                     TournamentStage)
 
 
 @admin.register(CustomUser)
