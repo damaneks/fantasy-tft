@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils import timezone
 
-from fantasy.models import Player, Tournament, TournamentStage
+from fantasy.models import Player, PlayerScore, Tournament, TournamentStage
 
 
 class TestPlayerModel(TestCase):
@@ -48,3 +48,22 @@ class TestTournamentStageModel(TestCase):
         data = self.data1
         self.assertTrue(isinstance(data, TournamentStage))
         self.assertEqual(str(data), 'Ultraliga Season 3 - Finale')
+
+
+class TestPlayerScoreModel(TestCase):
+
+    def setUp(self):
+        Tournament.objects.create(
+            name='Ultraliga Season 3', slug='ultraliga3')
+        TournamentStage.objects.create(
+            tournament_id=1, name='Finale', started=timezone.now())
+        Player.objects.create(name='shircane', slug='shircane')
+        self.data1 = PlayerScore.objects.create(
+            tournament_stage_id=1, player_id=1)
+
+    def test_playerScore_model_entry(self):
+        """
+        Test PlayerScore model data insertion/types/field attributes
+        """
+        data = self.data1
+        self.assertTrue(isinstance(data, PlayerScore))

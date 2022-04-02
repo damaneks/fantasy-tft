@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Player, Tournament, TournamentStage
+from .models import Player, PlayerScore, Tournament, TournamentStage
 
 
 @admin.register(Player)
@@ -22,3 +22,16 @@ class TournamentStageAdmin(admin.ModelAdmin):
     @admin.display(ordering='tournament__name', description='Tournament')
     def get_tournament_name(self, obj):
         return obj.tournament.name
+
+
+@admin.register(PlayerScore)
+class PlayerScoreAdmin(admin.ModelAdmin):
+    list_display = ['get_tournament_stage_name', 'get_player_name', 'score']
+
+    @admin.display(ordering='tournament_stage__name', description='Tournament')
+    def get_tournament_stage_name(self, obj):
+        return obj.tournament_stage
+
+    @admin.display(ordering='player__name', description='Player')
+    def get_player_name(self, obj):
+        return obj.player.name

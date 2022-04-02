@@ -29,3 +29,11 @@ class TournamentStage(models.Model):
 
     def __str__(self):
         return self.tournament.name + ' - ' + self.name
+
+
+class PlayerScore(models.Model):
+    tournament_stage = models.ForeignKey(
+        TournamentStage, on_delete=models.CASCADE, related_name='player_score')
+    player = models.ForeignKey(
+        Player, on_delete=models.CASCADE, related_name='player_score')
+    score = models.IntegerField(default=0)
