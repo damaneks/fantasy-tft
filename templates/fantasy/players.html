@@ -1,0 +1,40 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block title %}Fantasy TFT{% endblock %}
+
+{% block content %}
+  <div class="h-75 w-100">
+    <table id='table' data-toggle='table' data-search='true' data-sortable='true' class="text-white">
+      <thead>
+        <tr>
+          <th data-field="id" data-sortable="true">ID</th>
+          <th data-field="name" data-sortable="true">Name</th>
+          <th data-field="country" data-sortable="true">Country</th>
+          <th data-field="links"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for player in players %}
+          <tr>
+            <td>{{ player.id }}</td>
+            <td>{{ player.name }}</td>
+            <td><img src="{{player.country.flag}}" alt=""> {{ player.country.name }}</td>
+            <td class="d-flex justify-content-around">
+              {% if player.twitter_url %}
+                <a href="{{ player.twitter_url }}" target="_blank">
+                  <i class="bi bi-twitter"></i>
+                </a>
+              {% endif %}
+              {% if player.twitch_url %}
+                <a href="{{ player.twitch_url }}" target="_blank">
+                  <i class="bi bi-twitch"></i>
+                </a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
