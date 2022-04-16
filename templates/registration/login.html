@@ -1,0 +1,13 @@
+{% extends '../fantasy/base.html' %} 
+{% load static %} 
+
+{% block title %}Fantasy TFT{% endblock %} 
+
+{% block content %}
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <p class="lead">
+    <button type="submit" class="btn btn-lg btn-secondary">Log In</button>
+  </p>
+</form>
+{% endblock %}
