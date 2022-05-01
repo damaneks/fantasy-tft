@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django_countries.fields import CountryField
 from django.contrib.auth.models import AbstractUser
@@ -27,11 +28,17 @@ class Tournament(models.Model):
         return self.name
 
 
+class TournamentStageManager(models.Manager):
+    def get_queryset(self):
+        return super(TournamentStageManager, self).get_queryset().filter(started__gt=datetime.now())
+
+
 class TournamentStage(models.Model):
     tournament = models.ForeignKey(
         Tournament, on_delete=models.CASCADE, related_name='tournament_stage')
     name = models.CharField(max_length=255)
     started = models.DateTimeField()
+    events = TournamentStageManager()
 
     def __str__(self):
         return self.tournament.name + ' - ' + self.name
@@ -43,3 +50,4 @@ class PlayerScore(models.Model):
     player = models.ForeignKey(
         Player, on_delete=models.CASCADE, related_name='player_score')
     score = models.IntegerField(default=0)
+    is_final = models.BooleanField(default=False)
