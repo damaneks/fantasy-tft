@@ -1,11 +1,33 @@
 from django.db import models
 from django_countries.fields import CountryField
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+
+
+class UserManager(BaseUserManager):
+    def create_user(self, username, email, country, password=None):
+        """
+        Creates and saves a User with the given username, email, country and password.
+        """
+        if not username:
+            raise ValueError('Users must have an username')
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            username=username,
+            email=self.normalize_email(email),
+            country=country
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
 
 class CustomUser(AbstractUser):
     country = CountryField()
     is_premium = models.BooleanField(default=False)
+    objects = UserManager()
 
 
 class Player(models.Model):
