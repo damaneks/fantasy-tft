@@ -1,7 +1,13 @@
 from django.test import TestCase
 from django.utils import timezone
+from fantasy.models import Player, PlayerScore, Tournament, TournamentStage, CustomUser, UserTeam
 
-from fantasy.models import Player, PlayerScore, Tournament, TournamentStage
+
+class testUserManagerModel(TestCase):
+    def test_create_user(self):
+        user = CustomUser.objects.create_user('testuser', email='testuser@gmail.com',
+                                              password='testPassword123', country='PL')
+        self.assertTrue(isinstance(user, CustomUser))
 
 
 class TestPlayerModel(TestCase):
@@ -79,3 +85,26 @@ class TestPlayerScoreModel(TestCase):
         """
         data = self.data1
         self.assertTrue(isinstance(data, PlayerScore))
+        self.assertEqual(str(self.data1), 'Ultraliga Season 3 - Finale - shircane')
+
+
+class TestUserTeamModel(TestCase):
+
+    def setUp(self):
+        user = CustomUser.objects.create_user('testuser', email='testuser@gmail.com',
+                                              password='testPassword123', country='PL')
+        Tournament.objects.create(
+            name='Ultraliga Season 3', slug='ultraliga3')
+        TournamentStage.objects.create(
+            tournament_id=1, name='Finale', started=timezone.now())
+        Player.objects.create(name='shircane', slug='shircane')
+        self.data1 = UserTeam.objects.create(user=user, tournament_stage_id=1,
+                                             captain_id=1, player2_id=1, player3_id=1)
+
+    def test_userTeam_model_entry(self):
+        """
+        Test UserTeam model data insertion/types/field attributes
+        """
+        data = self.data1
+        self.assertTrue(isinstance(data, UserTeam))
+        self.assertEqual(str(self.data1), 'Ultraliga Season 3 - Finale - testuser')

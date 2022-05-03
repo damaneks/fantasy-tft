@@ -9,10 +9,6 @@ class UserManager(BaseUserManager):
         """
         Creates and saves a User with the given username, email, country and password.
         """
-        if not username:
-            raise ValueError('Users must have an username')
-        if not email:
-            raise ValueError('Users must have an email address')
 
         user = self.model(
             username=username,
