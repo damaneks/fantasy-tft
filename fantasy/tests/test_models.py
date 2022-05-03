@@ -39,7 +39,11 @@ class TestTournamentStageModel(TestCase):
         Tournament.objects.create(
             name='Ultraliga Season 3', slug='ultraliga3')
         self.data1 = TournamentStage.objects.create(
-            tournament_id=1, name='Finale', started=timezone.now())
+            tournament_id=1, name='Finale', started=timezone.now() + timezone.timedelta(days=3))
+        self.data2 = TournamentStage.objects.create(
+            tournament_id=1, name='Quarterfinale', started=timezone.now() - timezone.timedelta(days=3))
+        self.data3 = TournamentStage.objects.create(
+            tournament_id=1, name='Semifinale', started=timezone.now() + timezone.timedelta(days=1))
 
     def test_tournamentStage_model_entry(self):
         """
@@ -48,6 +52,14 @@ class TestTournamentStageModel(TestCase):
         data = self.data1
         self.assertTrue(isinstance(data, TournamentStage))
         self.assertEqual(str(data), 'Ultraliga Season 3 - Finale')
+
+    def test_tournamentStage_custom_manager(self):
+        """
+        Test tournament stage custom manager returns only future events
+        """
+        data = TournamentStage.events.all()
+        self.assertEqual(data.count(), 2)
+        self.assertEqual(data[0], self.data1)
 
 
 class TestPlayerScoreModel(TestCase):
