@@ -1,0 +1,76 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block title %}Pick team{% endblock %}
+
+{% block content %}
+  <h1>{{event}}</h1>
+  <p>Deadline:
+    {{event.started}}</p>
+  <h2>Pick your team</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="captainSelect">Select Captain</label>
+        <select class="form-control" name="captainSelect" id="captainSelect">
+          {% for player in players %}
+            <option value="{{player.id}}">{{player}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="player2Select">Select Player</label>
+        <select class="form-control" name="player2Select" id="player2Select">
+          {% for player in players %}
+            <option value="{{player.id}}">{{player}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="player3Select">Select Player</label>
+        <select class="form-control" name="player3Select" id="player3Select">
+          {% for player in players %}
+            <option value="{{player.id}}">{{player}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <p class="lead">
+      <button type="submit" class="btn btn-secondary">Submit team</button>
+    </p>
+  </form>
+  <h2>Available players</h2>
+  <div class="h-75 w-100">
+    <table id='table' data-toggle='table' data-search='true' data-sortable='true' class="text-white">
+      <thead>
+        <tr>
+          <th data-field="name" data-sortable="true">Name</th>
+          <th data-field="country" data-sortable="true">Country</th>
+          <th data-field="links"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for player in players %}
+          <tr>
+            <td>{{ player.name }}</td>
+            <td><img src="{{player.country.flag}}" alt="">
+              {{ player.country.name }}</td>
+            <td class="d-flex justify-content-around">
+              {% if player.twitter_url %}
+                <a href="{{ player.twitter_url }}" target="_blank">
+                  <i class="bi bi-twitter"></i>
+                </a>
+              {% endif %}
+              {% if player.twitch_url %}
+                <a href="{{ player.twitch_url }}" target="_blank">
+                  <i class="bi bi-twitch"></i>
+                </a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

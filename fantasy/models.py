@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django_countries.fields import CountryField
 from django.contrib.auth.models import AbstractUser, BaseUserManager
@@ -49,11 +50,18 @@ class Tournament(models.Model):
         return self.name
 
 
+class TournamentStageManager(models.Manager):
+    def get_queryset(self):
+        return super(TournamentStageManager, self).get_queryset().filter(started__gt=timezone.now())
+
+
 class TournamentStage(models.Model):
     tournament = models.ForeignKey(
         Tournament, on_delete=models.CASCADE, related_name='tournament_stage')
     name = models.CharField(max_length=255)
     started = models.DateTimeField()
+    objects = models.Manager()
+    events = TournamentStageManager()
 
     def __str__(self):
         return self.tournament.name + ' - ' + self.name
@@ -65,3 +73,12 @@ class PlayerScore(models.Model):
     player = models.ForeignKey(
         Player, on_delete=models.CASCADE, related_name='player_score')
     score = models.IntegerField(default=0)
+    is_final = models.BooleanField(default=False)
+
+
+class UserTeam(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_team')
+    tournament_stage = models.ForeignKey(TournamentStage, on_delete=models.CASCADE, related_name='user_team')
+    captain = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='user_team_c')
+    player2 = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='user_team_p2')
+    player3 = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='user_team_p3')
