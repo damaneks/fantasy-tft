@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .models import (CustomUser, Player, PlayerScore, Tournament,
-                     TournamentStage)
+                     TournamentStage, UserTeam)
 
 
 @admin.register(CustomUser)
@@ -61,3 +61,8 @@ class PlayerScoreAdmin(admin.ModelAdmin):
     @admin.display(ordering='player__name', description='Player')
     def get_player_name(self, obj):
         return obj.player.name
+
+
+@admin.register(UserTeam)
+class UserTeamAdmin(admin.ModelAdmin):
+    list_display = ['user', 'tournament_stage', 'captain', 'player2', 'player3']

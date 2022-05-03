@@ -13,25 +13,46 @@
     <div class="form-row">
       <div class="form-group col-md-4">
         <label for="captainSelect">Select Captain</label>
-        <select class="form-control" name="captainSelect" id="captainSelect">
+        <select class="form-control" name="captainSelect" id="captainSelect" required>
+          {% if not user_team %}
+            <option disabled="disabled" selected="selected" value="">-- Select captain --</option>
+          {% endif %}
           {% for player in players %}
-            <option value="{{player.id}}">{{player}}</option>
+            {% if player == user_team.captain %}
+              <option value="{{player.id}}" selected="selected">{{player}}</option>
+            {% else %}
+              <option value="{{player.id}}">{{player}}</option>
+            {% endif %}
           {% endfor %}
         </select>
       </div>
       <div class="form-group col-md-4">
         <label for="player2Select">Select Player</label>
-        <select class="form-control" name="player2Select" id="player2Select">
+        <select class="form-control" name="player2Select" id="player2Select" required>
+          {% if not user_team %}
+            <option disabled="disabled" selected="selected" value="">-- Select player 2 --</option>
+          {% endif %}
           {% for player in players %}
-            <option value="{{player.id}}">{{player}}</option>
+            {% if player == user_team.player2 %}
+              <option value="{{player.id}}" selected="selected">{{player}}</option>
+            {% else %}
+              <option value="{{player.id}}">{{player}}</option>
+            {% endif %}
           {% endfor %}
         </select>
       </div>
       <div class="form-group col-md-4">
         <label for="player3Select">Select Player</label>
-        <select class="form-control" name="player3Select" id="player3Select">
+        <select class="form-control" name="player3Select" id="player3Select" required>
+          {% if not user_team %}
+            <option disabled="disabled" selected="selected" value="">-- Select player 3 --</option>
+          {% endif %}
           {% for player in players %}
-            <option value="{{player.id}}">{{player}}</option>
+            {% if player == user_team.player3 %}
+              <option value="{{player.id}}" selected="selected">{{player}}</option>
+            {% else %}
+              <option value="{{player.id}}">{{player}}</option>
+            {% endif %}
           {% endfor %}
         </select>
       </div>

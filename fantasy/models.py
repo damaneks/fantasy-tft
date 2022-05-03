@@ -75,6 +75,9 @@ class PlayerScore(models.Model):
     score = models.IntegerField(default=0)
     is_final = models.BooleanField(default=False)
 
+    def __str__(self):
+        return str(self.tournament_stage) + ' - ' + self.player.name
+
 
 class UserTeam(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_team')
@@ -82,3 +85,6 @@ class UserTeam(models.Model):
     captain = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='user_team_c')
     player2 = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='user_team_p2')
     player3 = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='user_team_p3')
+
+    def __str__(self):
+        return str(self.tournament_stage) + ' - ' + self.user.username

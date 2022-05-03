@@ -40,13 +40,23 @@ def custom_logout(request):
 def team_picker(request):
     events = TournamentStage.events.all()
     event = events[0]
+    user_team_filter = UserTeam.objects.filter(tournament_stage=event, user=request.user)
     if request.method == 'POST':
         captain_id = request.POST.get('captainSelect')
         player2_id = request.POST.get('player2Select')
         player3_id = request.POST.get('player3Select')
-        UserTeam.objects.create(user=request.user.id, tournament_stage=event.id,
-                                captain=captain_id, player2=player2_id, player3=player3_id)
-        print(request.POST)
+        if user_team_filter.exists():
+            user_team = UserTeam.objects.get(tournament_stage=event, user=request.user)
+            user_team.captain_id = captain_id
+            user_team.player2_id = player2_id
+            user_team.player3_id = player3_id
+            user_team.save()
+        else:
+            UserTeam.objects.create(user=request.user, tournament_stage=event,
+                                    captain_id=captain_id, player2_id=player2_id, player3_id=player3_id)
     players_ids = PlayerScore.objects.filter(tournament_stage_id=event.id).values('player_id')
     players = Player.objects.filter(id__in=players_ids)
-    return render(request, 'fantasy/team_picker.html', {'players': players, 'event': event})
+    if user_team_filter.exists():
+        return render(request, 'fantasy/team_picker.html', {'players': players, 'event': event, 'user_team': user_team_filter[0]})
+    else:
+        return render(request, 'fantasy/team_picker.html', {'players': players, 'event': event})
