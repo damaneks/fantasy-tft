@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 from django.db import models
 from django_countries.fields import CountryField
 from django.contrib.auth.models import AbstractUser
@@ -30,7 +30,7 @@ class Tournament(models.Model):
 
 class TournamentStageManager(models.Manager):
     def get_queryset(self):
-        return super(TournamentStageManager, self).get_queryset().filter(started__gt=datetime.now())
+        return super(TournamentStageManager, self).get_queryset().filter(started__gt=timezone.now())
 
 
 class TournamentStage(models.Model):

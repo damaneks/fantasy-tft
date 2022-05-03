@@ -8,14 +8,14 @@
   <p>Deadline:
     {{event.started}}</p>
   <h2>Pick your team</h2>
-  <form method="post">
+  <form method="POST">
     {% csrf_token %}
     <div class="form-row">
       <div class="form-group col-md-4">
         <label for="captainSelect">Select Captain</label>
         <select class="form-control" name="captainSelect" id="captainSelect">
           {% for player in players %}
-            <option value="{{event.id}}">{{player}}</option>
+            <option value="{{player.id}}">{{player}}</option>
           {% endfor %}
         </select>
       </div>
@@ -23,7 +23,7 @@
         <label for="player2Select">Select Player</label>
         <select class="form-control" name="player2Select" id="player2Select">
           {% for player in players %}
-            <option value="{{event.id}}">{{player}}</option>
+            <option value="{{player.id}}">{{player}}</option>
           {% endfor %}
         </select>
       </div>
@@ -31,7 +31,7 @@
         <label for="player3Select">Select Player</label>
         <select class="form-control" name="player3Select" id="player3Select">
           {% for player in players %}
-            <option value="{{event.id}}">{{player}}</option>
+            <option value="{{player.id}}">{{player}}</option>
           {% endfor %}
         </select>
       </div>
